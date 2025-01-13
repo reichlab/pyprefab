@@ -1,26 +1,14 @@
+"""pyprefab initialization."""
+
 import sys
 
 import structlog
 
-import hello_world
-
-
-def add_custom_info(logger, method_name, event_dict):
-    event_dict['version'] = hello_world.__version__
-    return event_dict
-
 
 def setup_logging():
     shared_processors = [
-        add_custom_info,
-        structlog.processors.TimeStamper(fmt='iso'),
+        structlog.processors.TimeStamper(fmt='%Y-%m-%d %H:%M:%S'),
         structlog.processors.add_log_level,
-        structlog.processors.CallsiteParameterAdder(
-            [
-                structlog.processors.CallsiteParameter.FILENAME,
-                structlog.processors.CallsiteParameter.FUNC_NAME,
-            ]
-        ),
     ]
 
     if sys.stderr.isatty():
@@ -39,3 +27,6 @@ def setup_logging():
         processors=processors,
         cache_logger_on_first_use=True,
     )
+
+
+setup_logging()
