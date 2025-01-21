@@ -41,6 +41,7 @@ jobs:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
+    {% raw %}
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
@@ -66,6 +67,7 @@ jobs:
           path: .coverage.*
           include-hidden-files: true
           if-no-files-found: ignore
+    {% endraw %}
 
   coverage:
     # https://hynek.me/articles/ditch-codecov-python/
@@ -107,4 +109,7 @@ jobs:
         with:
             name: html-cov-report
             path: htmlcov
+        {%- raw %}
         if: ${{ failure() }}
+        {%- endraw %}
+
