@@ -10,7 +10,8 @@ def test_pyprefab_cli(tmp_path):
     project_dir = tmp_path / 'test_cli'
     result = runner.invoke(
         app,
-        ['pytest_project', '--author', 'Py Test', '--directory', project_dir],
+        ['pytest_project', '--author', 'Py Test', '--dir', project_dir],
+        input='""\n',
     )
     assert result.exit_code == 0
     assert project_dir.exists()
@@ -32,7 +33,8 @@ def test_invalid_project_name(tmp_path):
     runner = CliRunner()
     result = runner.invoke(
         app,
-        ['pytest-project', '--author', 'Py Test', '--directory', tmp_path],
+        ['pytest-project', '--author', 'Py Test', '--dir', tmp_path],
+        input='This is a test project\n',
     )
     assert result.exit_code != 0
 
@@ -44,8 +46,35 @@ def test_error_cleanup(tmp_path):
         runner = CliRunner()
         result = runner.invoke(
             app,
-            ['pytest_project', '--author', 'Py Test', '--directory', project_dir],
+            ['pytest_project', '--description', '', '--dir', project_dir],
+            input='Py Test\n',
         )
     assert result.exit_code != 0
     # pyprefab should remove project directory if an error occurs
     assert project_dir.exists() is False
+
+
+def test_existing_data_prompt(tmp_path):
+    """If there are existing files in project directory, user should receive confirmation prompt."""
+
+    project_dir = tmp_path / 'test_existing_data'
+    project_dir.mkdir()
+    (project_dir / 'existing_file.txt').touch()
+
+    # prompt response = n
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        ['pytest_project', '--author', 'Py Test', '--description', 'new project', '--dir', project_dir],
+        input='n\n',
+    )
+    assert result.exit_code != 0
+
+    # prompt response = y
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        ['pytest_project', '--author', 'Py Test', '--description', 'new project', '--dir', project_dir],
+        input='y\n',
+    )
+    assert result.exit_code == 0

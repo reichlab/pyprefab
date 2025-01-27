@@ -24,7 +24,7 @@ def cli_output(tmp_path):
             "Miles O'Brien",
             '--description',
             "An app for parsin' transporter logs",
-            '--directory',
+            '--dir',
             tmp_path,
         ],
     )
@@ -64,6 +64,22 @@ def test_logging(cli_output):
     logs = ast.literal_eval(result.stdout)
     assert logs.get('event').lower() == 'log test'
     assert logs.get('level').lower() == 'info'
+
+
+def test_changelog(cli_output):
+    """Location and contents of CHANGELOG.md are correct."""
+    project_path, cli_result = cli_output
+    with open(project_path / 'CHANGELOG.md', 'r') as f:
+        changelog = f.read()
+        assert 'notable changes to transporter_logs are documented here' in changelog
+
+
+def test_contributing(cli_output):
+    """Location and contents of CHANGELOG.md are correct."""
+    project_path, cli_result = cli_output
+    with open(project_path / 'CONTRIBUTING.md', 'r') as f:
+        contributing = f.read()
+        assert 'contributing to transporter_logs' in contributing.lower()
 
 
 def test_readme(cli_output):
