@@ -57,6 +57,6 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          artifact-name: static-docs
+          artifact_name: static-docs
           token: ${{ github.token }}
 
