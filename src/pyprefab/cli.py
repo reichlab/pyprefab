@@ -8,15 +8,27 @@ import structlog
 import typer
 from jinja2 import Environment, FileSystemLoader
 from rich import print
+from rich.console import Console
 from rich.panel import Panel
+from rich.theme import Theme
 from typing_extensions import Annotated
 
 logger = structlog.get_logger()
 
+cli_theme = Theme(
+    {
+        'help': 'bold cyan',
+        'option': 'bold yellow',
+        'argument': 'bold magenta',
+    }
+)
+
+# Create a console with the custom theme
+console = Console(theme=cli_theme)
 app = typer.Typer(
     add_completion=False,
     help='Generate python project scaffolding based on pyprefab.',
-    rich_markup_mode='markdown',
+    rich_markup_mode='rich',
 )
 
 
@@ -44,6 +56,8 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
     for template_file in templates_dir.rglob('*'):
         if template_file.is_file():
             rel_path = template_file.relative_to(templates_dir)
+            if str(rel_path.parents[0]).startswith('docs') and not context.get('docs'):
+                continue
             template = env.get_template(str(rel_path))
             output = template.render(**context)
 
@@ -64,7 +78,7 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
 
 
 @app.command()
-def create(
+def main(
     name: Annotated[str, typer.Argument(help='Name of the project', show_default=False)],
     author: Annotated[Optional[str], typer.Option(help='Project author', prompt='Project author', show_default=False)],
     description: Annotated[
@@ -79,9 +93,15 @@ def create(
             show_default=False,
         ),
     ],
+    docs: bool = typer.Option(
+        False,
+        '--docs',
+        help='Include Sphinx documentation files',
+        show_default=False,
+    ),
 ):
     """
-    :snake: **Create Python package boilerplate** :snake:
+    🐍 Create Python package boilerplate 🐍
     """
     if not validate_project_name(name):
         typer.secho(
@@ -108,16 +128,21 @@ def create(
             'project_name': name,
             'author': author,
             'description': description,
+            'docs': docs,
         }
 
         # Write Jinja templates to project directory
         render_templates(context, templates_dir, target_dir)
-
+        panel_msg = (
+            f'✨ Created new project [bold green]{name}[/] in {target_dir}\n'
+            f'Author: [blue]{author}[/]\n'
+            f'Description: {description}'
+        )
+        if docs:
+            panel_msg += f'\nDocumentation: {target_dir}/docs'
         print(
             Panel.fit(
-                f'✨ Created new project [bold green]{name}[/] in {target_dir}\n'
-                f'Author: [blue]{author}[/]\n'
-                f'Description: {description}',
+                panel_msg,
                 title='Project Created Successfully',
                 border_style='green',
             )
@@ -130,9 +155,5 @@ def create(
         raise typer.Exit(1)
 
 
-def main():
-    app()
-
-
 if __name__ == '__main__':
-    main()
+    app()  # pragma: no cover

@@ -4,11 +4,16 @@ All notable changes to `pyprefab` are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the project uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.5.0] - [2025-02-10]
 
 ### Added
 
 - Sphinx-based project documentation (published on GitHub pages)
+- New CLI `--docs` option to include skeleton documentation in created package
+
+### Fixed
+
+- Add escape character to quotation marks in author name and project description
 
 ## [0.4.0] - [2025-01-26]
 
