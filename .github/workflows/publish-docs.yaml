@@ -38,7 +38,7 @@ jobs:
       - name: Build Sphinx docs 🗿
         shell: bash
         run: |
-          uv run --group docs sphinx-build docs/source docs/_build/html --fail-on-warning
+          uv run --group docs sphinx-build docs/source docs/_build/html --fresh-env --fail-on-warning
 
       - name: Upload artifact 📤
         uses: actions/upload-pages-artifact@v3
