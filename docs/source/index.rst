@@ -12,5 +12,5 @@
    CONTRIBUTING
    CHANGELOG
 
-.. include:: README.md
+.. include:: readme.md
    :parser: myst_parser.sphinx_
