@@ -4,11 +4,12 @@ All notable changes to `pyprefab` are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the project uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.5.1] - [2025-02-10]
 
 ### Fixed
 
-- Sphinx-build failure in GitHub action
+- Fail docs build GitHub action on Sphinx error or warning
+- Correct pyprefab version retrieved during doc build
 
 ## [0.5.0] - [2025-02-10]
 
