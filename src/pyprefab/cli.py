@@ -1,6 +1,7 @@
 """Command-line interface for the pyprefab package."""
 
 import shutil
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -73,48 +74,72 @@ def render_templates(context: dict, templates_dir: Path, target_dir: Path):
             # Create destination path preserving structure
             dest_file = target_dir.joinpath(*path_parts)
             dest_file.parent.mkdir(parents=True, exist_ok=True)
-            with open(dest_file, 'w', newline='\n') as f:
+            with open(dest_file, 'w', encoding='utf-8', newline='\n') as f:
                 f.write(output)
 
 
 @app.command()
 def main(
-    name: Annotated[str, typer.Argument(help='Name of the project', show_default=False)],
-    author: Annotated[Optional[str], typer.Option(help='Project author', prompt='Project author', show_default=False)],
-    description: Annotated[
-        Optional[str], typer.Option(help='Project description', prompt='Project description', show_default=False)
+    name: Annotated[
+        Optional[str],
+        typer.Option(
+            help='Name of the project',
+            prompt=typer.style('Project name 🐍', fg=typer.colors.MAGENTA, bold=True),
+            show_default=False,
+        ),
     ],
+    author: Annotated[
+        Optional[str],
+        typer.Option(
+            help='Project author',
+            prompt=typer.style('Project author 👤', fg=typer.colors.MAGENTA, bold=True),
+        ),
+    ] = 'None',
+    description: Annotated[
+        Optional[str],
+        typer.Option(
+            help='Project description',
+            prompt=typer.style('Project description 📝', fg=typer.colors.MAGENTA, bold=True),
+        ),
+    ] = 'None',
     project_dir: Annotated[
         Path,
         typer.Option(
             '--dir',
             help='Directory that will contain the project',
-            prompt='Project directory',
-            show_default=False,
+            prompt=typer.style('Project directory 🎬', fg=typer.colors.MAGENTA, bold=True),
         ),
-    ],
+    ] = Path.cwd(),
     docs: bool = typer.Option(
         False,
         '--docs',
-        help='Include Sphinx documentation files',
-        show_default=False,
+        help='Include Sphinx documentation files 📄',
     ),
 ):
     """
     🐍 Create Python package boilerplate 🐍
     """
     if not validate_project_name(name):
-        typer.secho(
-            f'Error: {name} is not a valid Python package name',
-            fg=typer.colors.RED,
+        err_console = Console(stderr=True)
+        err_console.print(
+            Panel.fit(
+                f'⛔️ Package not created: {name} is not a valid Python package name',
+                title='pyprefab error',
+                border_style='red',
+            )
         )
         raise typer.Exit(1)
 
     if project_dir.exists() and any(project_dir.iterdir()):
-        proceed = typer.confirm(f'Directory {project_dir} is not empty. Proceed?')
-        if not proceed:
-            typer.secho(f'{name} not created', fg=typer.colors.YELLOW)
-            raise typer.Exit(code=1)
+        err_console = Console(stderr=True)
+        err_console.print(
+            Panel.fit(
+                f'⛔️ Package not created: {str(project_dir)} is not an empty directory',
+                title='pyprefab error',
+                border_style='red',
+            )
+        )
+        raise typer.Exit(1)
 
     templates_dir = Path(__file__).parent / 'templates'
     target_dir = project_dir or Path.cwd() / name
@@ -149,6 +174,14 @@ def main(
         )
 
     except Exception as e:
+        err_console = Console(stderr=True)
+        err_console.print(
+            Panel.fit(
+                f'⛔️ Error creating project: {str(e)}',
+                title='pyprefab error',
+                border_style='red',
+            )
+        )
         typer.secho(f'Error creating project: {str(e)}', fg=typer.colors.RED)
         if target_dir.exists():
             shutil.rmtree(target_dir)
@@ -156,4 +189,4 @@ def main(
 
 
 if __name__ == '__main__':
-    app()  # pragma: no cover
+    sys.exit(app())  # pragma: no cover
