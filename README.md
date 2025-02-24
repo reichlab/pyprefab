@@ -26,13 +26,13 @@ If you have `uv` installed,
 fastest way to create a new Python package with pyprefab:
 
 ```sh
-uvx pyprefab <name-of-new-package>
+uvx pyprefab
 ```
 
 Otherwise, use `pip` or `pipx` to install pyprefab:
 
 ```sh
-pip install pyprefab
+python -m pip install pyprefab
 
-pyprefab <name-of-new-package>
+python -m pyprefab
 ```

@@ -2,7 +2,7 @@
 
 ## pyprefab CLI
 
-By design, pyprefab requires only a few pieces of information to create the
+pyprefab requires only a few pieces of information to create the
 boilerplate for a Python package.
 
 ```sh
@@ -12,16 +12,14 @@ Usage: pyprefab [OPTIONS] NAME
 
 🐍 Create Python package boilerplate 🐍
 
-╭─ Arguments ───────────────────────────────────────────────────────────────╮
-│ *    name      TEXT  Name of the project [required]                       │
-╰───────────────────────────────────────────────────────────────────────────╯
-╭─ Options ─────────────────────────────────────────────────────────────────╮
-│ *  --author       TEXT Project author [required]                          │
-│ *  --description  TEXT Project description [required]                     │
-│ *  --dir          PATH Directory that will contain the project [required] │
-│    --docs              Include Sphinx documentation files                 │
-│    --help              Show this message and exit.                        │
-╰───────────────────────────────────────────────────────────────────────────╯
+╭─ Options ───────────────────────────────────────────────────────────────────────────────╮
+│ *  --name         TEXT  Name of the project [required]                                  │
+│    --author       TEXT  Project author [default: None]                                  │
+│    --description  TEXT  Project description [default: None]                             │
+│    --dir          PATH  Directory that will contain the project [default: <current dir> │
+│    --docs    --no-docs  Include Sphinx documentation files [default: no-docs]           │
+│    --help               Show this message and exit.                                     │
+╰─────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ### Example CLI use
@@ -64,11 +62,6 @@ with the following files in `trek/code/holodeck`:
 └── test
     └── test_app.py
 ```
-
-:::{caution}
-If the `--dir` option points to a non-empty directory, pyprefab will overwrite
-the existing contents (after prompting you).
-:::
 
 ### Optional project documentation
 
@@ -117,21 +110,21 @@ with the new package.
 
 ### Interactive mode
 
-If you don't explicitly pass the `--author`, `--description`, `--dir` options,
-pyprefab will prompt for them:
+If you don't explicitly specify options, pyprefab will prompt for them:
 
 ```sh
->>> pyprefab holodeck --docs
-Project author: rbarclay
-Project description: personal holodeck programs
-Project directory: trek/code/holodeck/docs
-
-╭──────────── Project Created Successfully ─────────────╮
-│ Created new project holodeck in trek/code/holodeck    │
-│ Author: rbarclay                                      │
-│ Description: personal holodeck programs               │
-│ Documentation: trek/code/holodeck/docs                │
-╰───────────────────────────────────────────────────────╯
+>>> pyprefab
+Project name 🐍: holodeck
+Project author 👤 [None]: rbarclay
+Project description 📝 [None]: personal holodeck programs
+Project directory 🎬 [/Users/rbarclay/code/holodeck]:
+Include Sphinx docs? 📄 [y/N]: y
+╭───────────────── Project Created Successfully ──────────────╮
+│ Created new project holodeck in /Users/rbarclay/holode      │
+│ Author: rbarclay                                            │
+│ Description: personal holodeck programs                     │
+│ Documentation: /Users/rbarclay/holodeck/docs                │
+╰─────────────────────────────────────────────────────────────╯
 ```
 
 ## Creating a dev environment for the new package
