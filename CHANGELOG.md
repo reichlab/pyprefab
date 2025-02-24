@@ -2,13 +2,16 @@
 
 All notable changes to `pyprefab` are documented here.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com), and the project uses [Semantic Versioning](https://semver.org/).
+The format is based on [Keep a Changelog](https://keepachangelog.com), and the
+project uses [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## 0.5.3
 
 ### Changed
 
 - Entry point of generated app now displays additional output
+- `--docs` parameter can now be set interactively
+- README examples reflect that `--name` and `--docs` options are interactive
 
 ## 0.5.2
 
@@ -44,7 +47,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and the p
 
 ### Added
 
-- New templates for GitHub workflows: ci (linting, tests, and coverage), publishing to TestPyPI, and publishing to PyPI
+- New templates for GitHub workflows: ci (linting, tests, and coverage),
+  publishing to TestPyPI, and publishing to PyPI
 - Project changelog
 - New CHANGELOG.md template
 - New CONTRIBUTING.md template
@@ -70,7 +74,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and the p
 
 ### Added
 
-- New templates for generating Python package boilerplate: .gitignore, README.md, app.py
+- New templates for generating Python package boilerplate: .gitignore,
+  README.md, app.py
 
 ### Changed
 
@@ -84,8 +89,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and the p
 
 ### Added
 
-- Added `pyproject.toml` template as the first piece of template-driven Python boilerplate
+- Added `pyproject.toml` template as the first piece of template-driven Python
+  boilerplate
 
 ### Removed
 
-- Removed artifacts from prior iteration of `pyprefab` that pre-dates the template-drive approach
+- Removed artifacts from prior iteration of `pyprefab` that pre-dates the
+  template-driven approach
