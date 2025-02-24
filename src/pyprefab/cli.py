@@ -110,11 +110,13 @@ def main(
             prompt=typer.style('Project directory 🎬', fg=typer.colors.MAGENTA, bold=True),
         ),
     ] = Path.cwd(),
-    docs: bool = typer.Option(
-        False,
-        '--docs',
-        help='Include Sphinx documentation files 📄',
-    ),
+    docs: Annotated[
+        Optional[bool],
+        typer.Option(
+            help='Include Sphinx documentation files',
+            prompt=typer.style('Include Sphinx docs? 📄', fg=typer.colors.MAGENTA, bold=True),
+        ),
+    ] = False,
 ):
     """
     🐍 Create Python package boilerplate 🐍
