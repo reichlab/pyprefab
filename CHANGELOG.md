@@ -4,6 +4,12 @@ All notable changes to `pyprefab` are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com), and the project uses [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Changed
+
+- Entry point of generated app now displays additional output
+
 ## 0.5.2
 
 ### Changed
