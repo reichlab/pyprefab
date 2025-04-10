@@ -18,6 +18,8 @@ updates:
     # Location of `uv.lock` and/or `pyproject.toml`
     directory: "/"
     # dependabot fails on jinja2 when using uv
+    allow:
+      - dependency-type: "all"
     ignore:
       - dependency-name: "jinja2"
     schedule:
