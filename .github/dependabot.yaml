@@ -19,6 +19,7 @@ updates:
     directory: "/"
     allow:
       - dependency-type: "all"
+    versioning-strategy: increase
     # dependabot fails on jinja2 when using uv
     ignore:
       - dependency-name: "jinja2"
